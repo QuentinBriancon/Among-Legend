@@ -24,6 +24,10 @@ async def CreateLobby(ctx, team_name1, team_name2 ,lobby_name):
         await ctx.send(f"Le lobby {lobby_name} existe deja. Supprimer un lobby en utilisant !DeleteLobby.")
         return
     lobbies[lobby_name]= [team_name1, team_name2, False]
+    
+    if lobby_name == "":
+        await ctx.send(f"Vous devez donner un nom a votre lobby.")
+        return
         
     await ctx.send(f"Le lobby entre les equipes {team_name1} et {team_name2} a ete cree.")
     await ctx.send(f"Les equipes {team_name1} et {team_name2} sont :")
@@ -42,6 +46,10 @@ async def DeleteLobby(ctx, lobby_name):
 
 # Choix des roles
 async def SendRoles(ctx, lobby_name):
+    if lobby_name not in lobbies:
+        await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
+        return
+    
     await ctx.send("Les joueurs vont se voir repartir leur role.")
     team_name1, team_name2, role_attribue = lobbies[lobby_name]
     
@@ -72,14 +80,24 @@ async def StartGame(ctx, lobby_name):
 
 
 # Arrete la partie pour le lobby donne
-async def StopGame(ctx, lobby_name):
+async def StopGame(ctx, lobby_name, response):
     if lobby_name not in lobbies:
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
         return
     
     await ctx.send("La partie va s'arreter.")
+    
     team_name1, team_name2, role_attribue = lobbies[lobby_name]
  
+
+    #player_vote
+
+    for team_name in [team_name1, team_name2]:
+        team = teams[team_name]
+        for player in team.players_in_team.values():        
+            player.player_objective(response)
+
+
     for team_name in [team_name1, team_name2]:
         await teams[team_name].results(ctx)
     

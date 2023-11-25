@@ -11,7 +11,7 @@ teams={}
 # Crée l'équipe
 async def CreateTeam(ctx):
     content = ctx.message.content
-    command = ctx.command.name  # Nom de la commande utilisée (dans ce cas, "CreateTeam")
+    command = "team create"  
     mentions = ctx.message.mentions  # Liste des mentions dans le message
     
     # Extrait le contenu qui n'est ni les mentions ni la commande
@@ -70,8 +70,8 @@ async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
     index1 -= 1
     index2 -= 1
     
-    players_team1 = [teams[team_name1].TOP, teams[team_name1].JNG, teams[team_name1].MID, teams[team_name1].ADC, teams[team_name1].SUPP]
-    players_team2 = [teams[team_name2].TOP, teams[team_name2].JNG, teams[team_name2].MID, teams[team_name2].ADC, teams[team_name2].SUPP]
+    players_team1 = [teams[team_name1].TOP, teams[team_name1].JGL, teams[team_name1].MID, teams[team_name1].ADC, teams[team_name1].SUPP]
+    players_team2 = [teams[team_name2].TOP, teams[team_name2].JGL, teams[team_name2].MID, teams[team_name2].ADC, teams[team_name2].SUPP]
     players_team1[index1], players_team2[index2] = players_team2[index2], players_team1[index1]
     
     

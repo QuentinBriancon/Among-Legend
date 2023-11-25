@@ -7,8 +7,7 @@ from Player import Player
 from Parser_Team import *
 
 
-
-### LOBBY COMMANDS ###
+lobbies={}
 
 # Crée le lobby
 async def CreateLobby(ctx, team_name1, team_name2 ,lobby_name):
@@ -90,8 +89,6 @@ async def StopGame(ctx, lobby_name):
             player.game_in_progress = False
             player.role = None
             team.assigned_roles = {}
-    await ctx.send('La partie de Among Legends est termine. Mais pas le lobby, vous pouvez relancer directement avec !SendRoles Puis !StartGame')
+    await ctx.send('La partie de Among Legend est termine. Mais pas le lobby, vous pouvez relancer directement avec !SendRoles Puis !StartGame')
 
     
-    
-

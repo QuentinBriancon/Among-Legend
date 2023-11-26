@@ -66,6 +66,9 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
     elif event == "start":
         await StartGame(ctx, lobby_name)
     elif event == "stop":
+        team_name1, team_name2 = await test_stop_game(ctx, lobby_name)
+        
+        #Recuperer les informations de fin de partie
         await ctx.channel.send(
             "La partie est sur le point de se terminer. Veuillez fournir les informations suivantes en mentionnant les personnes concernees pour les informations (dans le meme ordre):"
             "\n victoire/defaite, top kill, top mort, top degats, pire participation aux kill"
@@ -89,6 +92,26 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
             await ctx.channel.send("Le temps imparti pour la réponse est écoulé.")
 
         await bot.process_commands(response)
+        
+        #Recuperer les votes des joueurs
+        #Ajouter des threads pour que les joueurs puissent voter en meme temps
+        for team_name in [team_name1, team_name2]:
+            team = teams[team_name]
+            for player in team.players_in_team.values():
+                await player.discord_name.send(
+                    "\n\n Quels roles pensez vous qu'ont vos alliee, envoyez dans l'odre des postes de la game"
+                    "\n Exemple: si je suis mid et que je pense que le top est imposteur, le jgl super-heros, l'adc romeo et le supp Serpentin il faut envoyer:"
+                    "\n Imposteur, Super-heros, Romeo, Serpentin"
+                    "\n Faites attention a la syntaxe, il est conseille de copier coller au cas ou :"
+                    "\n Imposteur, Serpentin, Double-face, Super-heros, Agent double, Romeo, Innovateur"
+                    )
+
+                vote = await bot.wait_for("message", timeout=120)  
+                vote = response.content.split(",")
+                player.vote = vote
+                await player.discord_name.send(f"Vous avez vote pour {response}")
+
+
         await StopGame(ctx, lobby_name, response)
     else:
         await ctx.send("L'event n'est pas reconnu, les events possibles sont : create, delete, send, start")

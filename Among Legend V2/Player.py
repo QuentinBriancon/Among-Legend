@@ -2,12 +2,16 @@ import random
 import discord
 from discord.ext import commands, tasks
 import asyncio
-from Team import Team
 
+intents = discord.Intents.all()
+intents.members = True
+intents.guilds = True
+intents.messages = True
 
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 class Player:
-    
+
     def __init__(self, team, poste, name, discord_id):
         self.role = ""
         self.team = team
@@ -53,16 +57,13 @@ class Player:
             await self.discord_name.send(f"Ton amour secret dans l'equipe ennemie, il joue {poste}.")
             
 
-#Recuperer le vote du joueur
-    async def get_vote(self, response):
-        await self.discord_name.send(f"Quels roles pensez vous qu'ont vos alliee, envoyez dans l'odre des postes de la game")
-        
-            
+
     #Calculer le score du joueur selon son role et le resultat de la partie
     def player_objective(self, response):
         
+        result = response.content.lower()
         for mention in response.mentions:
-            result = response.replace(mention.mention, "")
+            result = result.replace(mention.mention, "")
         result = result.strip(" ")
         
         top_kill = (response.raw_mentions[0] == self.discord_id)
@@ -82,6 +83,7 @@ class Player:
                 self.score -= 2
 
         else:
+            Team = self.team
             for role in Team.roles.keys():
                 if self.role == role:
                     

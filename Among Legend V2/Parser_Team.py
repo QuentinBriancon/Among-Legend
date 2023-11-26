@@ -78,6 +78,9 @@ async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
     teams[team_name1].define_team(players_team1)
     teams[team_name2].define_team(players_team2)
     
+    #echange les objets player entre les equipes
+    teams[team_name1].players_in_team[players_team1[index1]], teams[team_name2].players_in_team[players_team2[index2]] = teams[team_name2].players_in_team[players_team2[index2]], teams[team_name1].players_in_team[players_team1[index1]]
+    
     await ctx.send(f"Les joueurs {players_team1[index1]} et {players_team2[index2]} ont ete echanges entre les equipes {team_name1} et {team_name2}.")
     
 #Ajouter un joueur ne peut etre que dans une equipe au total

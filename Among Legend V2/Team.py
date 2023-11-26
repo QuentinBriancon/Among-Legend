@@ -82,7 +82,7 @@ class Team:
                 "worst_participation": -1
             }
         },
-        'L\'Innovateur':  {
+        'Innovateur':  {
             'description': 'Ton objectif est de gagner la partie avec un pick exotique',
             'conditions': {
                 "result_game": 1,
@@ -113,17 +113,10 @@ class Team:
             await ctx.send('Une equipe est composee de exactement 5 joueurs')
             return
 
-        self.TOP = players[0]
-        self.JGL = players[1]
-        '''
-        self.MID = players[2]
-        self.ADC = players[3]
-        self.SUPP = players[4]
-        '''
-
+        self.define_team(players)            
+        
         for index, player in enumerate(players):
             self.players_in_team[player] = Player(self, postes[index], player, player.id)
-
             
 
         self.team_name = team_name
@@ -131,14 +124,14 @@ class Team:
         await ctx.send(f"L'equipe {self.team_name} a ete creee.")
    
     def define_team(self, players):
-        self.TOP, self.JGL, self.MID, self.ADC, self.SUPP = (
+        self.TOP, self.JGL=( #), self.MID, self.ADC, self.SUPP = (
         players[0],
-        players[1],
+        players[1])
+        ''',
         players[2],
         players[3],
         players[4],
-        )
-
+        )'''
 
 
     async def modify(self, ctx, index1: int, index2: int):
@@ -172,7 +165,7 @@ class Team:
         players = [self.TOP, self.JGL] #, self.MID, self.ADC, self.SUPP]
         for player in players:
             role = self.assigned_roles[player]
-            description = Team.roles[role]
+            description = Team.roles[role]['description']
             await player.send(f"Ton role dans Among Legends est : {role}.\nDescription : {description}")
             
     async def assign_roles(self, ctx):
@@ -205,5 +198,14 @@ class Team:
         ])
     
         await ctx.send(f"Equipe {self.team_name} :\n{player_mentions}")
-    
-              
+        
+    async def vote(self, ctx):        
+        #Calcul des scores liés aux votes, premier vote (Imposteur...) = premier poste n'etant pas le joueur, (TOP, JGL, MID, ADC, SUPP)
+        for player in self.players_in_team.values():
+            i = 0        
+            for poste in postes:
+                if player.poste != poste:
+                    if player.vote[0] == self.poste.role:
+                        player.score += 1
+                    i += 1
+

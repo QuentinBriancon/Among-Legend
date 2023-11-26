@@ -79,24 +79,44 @@ async def StartGame(ctx, lobby_name):
             player.game_in_progress = True
 
 
-# Arrete la partie pour le lobby donne
-async def StopGame(ctx, lobby_name, response):
+#Teste si une partie est en cours
+async def test_stop_game(ctx, lobby_name):
     if lobby_name not in lobbies:
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
         return
     
+    team_name1, team_name2, role_attribue = lobbies[lobby_name]
+    
+    for team_name in [team_name1, team_name2]:
+        team = teams[team_name]
+        for player in team.players_in_team.values():
+            if player.game_in_progress == False:
+                await ctx.send(f"La partie n'est pas en cours. Utilisez !lobby start {lobby_name}.")
+                return
+    return team_name1, team_name2
+
+# Arrete la partie pour le lobby donne
+async def StopGame(ctx, lobby_name, response):
+    
     await ctx.send("La partie va s'arreter.")
     
     team_name1, team_name2, role_attribue = lobbies[lobby_name]
- 
 
-    #player_vote
-
+    #Calcul des scores    
+    
+    #Objectifs
     for team_name in [team_name1, team_name2]:
         team = teams[team_name]
         for player in team.players_in_team.values():        
             player.player_objective(response)
 
+    #Votes
+    for team_name in [team_name1, team_name2]:
+        await teams[team_name].vote(ctx)
+        
+    #Affichage des scores
+        
+    #Affichage des resultats
 
     for team_name in [team_name1, team_name2]:
         await teams[team_name].results(ctx)

@@ -7,9 +7,6 @@ from Player import Player
 from Parser_Team import *
 from Parser_Lobby import *
 
-#########
-#########  COMMANDE A CHANGER
-######## 
 
 
 intents = discord.Intents.all()
@@ -31,7 +28,22 @@ async def rules(ctx):
         role_list += f"\n\n{role}:\n{description}"
     await ctx.send(f"Le jeu se deroule comme une partie normale de league of legends mais des roles sont assignes et les joueurs peuvent avoir des objectifs un peu differents. Les roles sont :{role_list}")
 
-        
+@bot.command()
+async def custom_help(ctx):
+    await ctx.send("Les commandes disponibles sont : "
+                   "\n !team create <nom_equipe> <@joueur1> <@joueur2> <@joueur3> <@joueur4> <@joueur5>"
+                  "\n !team modify <nom_equipe> <index_joueur1> <index_joueur2>"
+                 "\n !team show "
+                 "\n !team delete <nom_equipe>" 
+                 "\n !team switch <nom_equipe1> <index_joueur1> <nom_equipe2> <index_joueur2>" 
+                 "\n !lobby create <nom_equipe1> <nom_equipe2> <nom_lobby>" 
+                 "\n !lobby delete <nom_lobby>" 
+                 "\n !lobby start <nom_lobby>" 
+                 "\n !lobby stop <nom_lobby>" 
+                 "\n !lobby preload <nom_lobby>"
+                 "\n !rules" 
+                 "\n !help")
+    
 
 @bot.command()
 async def team(ctx,event, arg1=None, arg2=None, Arg3=None, Arg4=None):
@@ -98,27 +110,36 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
             await bot.process_commands(response)
             
             return response
-
-        response_team1 = await Get_info(ctx, team_name1)
-        response_team2 = await Get_info(ctx, team_name2)
         
-        #Recuperer les votes des joueurs
-        #Ajouter des threads pour que les joueurs puissent voter en meme temps
-        for team_name in [team_name1, team_name2]:
-            team = teams[team_name]
-            for player in team.players_in_team.values():
-                await player.discord_name.send(
+
+        #Verifier la syntaxe        
+        async def Get_vote(player):
+            await player.discord_name.send(
                     ".\n Quels roles pensez vous qu'ont vos alliee, envoyez dans l'odre des postes de la game"
                     "\n Exemple: si je suis mid et que je pense que le top est imposteur, le jgl super-heros, l'adc romeo et le supp Serpentin il faut envoyer:"
                     "\n Imposteur, Super-heros, Romeo, Serpentin"
                     "\n Faites attention a la syntaxe, il est conseille de copier coller au cas ou :"
                     "\n Imposteur, Serpentin, Double-face, Super-heros, Agent double, Romeo, Innovateur"
                     )
-
-                vote = await bot.wait_for("message", timeout=120)  
+            
+            try:
+                vote = await bot.wait_for("message",check=lambda m: m.author == player.discord_name, timeout=120)  
                 vote = vote.content.split(",")
                 player.vote = vote
                 await player.discord_name.send(f"Vous avez vote pour {vote}")
+            except asyncio.TimeoutError:
+                await player.discord_name.send("Le temps imparti pour la reponse est ecoule.")
+            
+
+        response_team1 = await Get_info(ctx, team_name1)
+        response_team2 = await Get_info(ctx, team_name2)
+        
+        
+        #Recuperer les votes des joueurs
+        #Ajouter des threads pour que les joueurs puissent voter en meme temps
+        vote_tasks = [Get_vote(player) for team_name in [team_name1, team_name2] for player in teams[team_name].players_in_team.values()]
+        await asyncio.gather(*vote_tasks)
+                
 
 
         await StopGame(ctx, lobby_name, response_team1, response_team2)

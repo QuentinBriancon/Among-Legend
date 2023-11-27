@@ -21,7 +21,7 @@ async def CreateTeam(ctx):
     team_name = team_name.strip(" ")
 
     if team_name in teams:
-        await ctx.send(f"L'equipe {team_name} existe deja. Supprimer une equipe en utilisant !DeleteTeam.")
+        await ctx.send(f"L'equipe {team_name} existe deja. Supprimer une equipe en utilisant !team delete <nom de la team>.")
         return
     
     if team_name == "":
@@ -35,7 +35,7 @@ async def CreateTeam(ctx):
 # Modifie l'équipe
 async def ModifyTeam(ctx, team_name, index1: int, index2: int):
     if team_name not in teams:
-        await ctx.send(f"L'equipe {team_name} n'existe pas. Creez une equipe en utilisant !CreateTeam.")
+        await ctx.send(f"L'equipe {team_name} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
         return
     await teams[team_name].modify(ctx, index1, index2)
 
@@ -43,7 +43,7 @@ async def ModifyTeam(ctx, team_name, index1: int, index2: int):
 # Affiche les équipes
 async def ShowTeams(ctx):
     if teams == {}:
-        await ctx.send(f"Aucune equipe n'a ete creee pour le moment. Creez une equipe en utilisant !CreateTeam.")
+        await ctx.send(f"Aucune equipe n'a ete creee pour le moment. Creez une equipe en utilisant !team create <nom de la team>.")
         return
     for team_name  in teams:
         await teams[team_name].show_team(ctx)
@@ -61,10 +61,10 @@ async def DeleteTeam(ctx, team_name):
 async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
     if team_name1 not in teams or team_name2 not in teams:
         if team_name1 not in teams:
-            await ctx.send(f"L'equipe {team_name1} n'existe pas. Creez une equipe en utilisant !CreateTeam.")
+            await ctx.send(f"L'equipe {team_name1} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
             return
         else:
-            await ctx.send(f"L'equipe {team_name2} n'existe pas. Creez une equipe en utilisant !CreateTeam.")
+            await ctx.send(f"L'equipe {team_name2} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
             return
         
     index1 -= 1

@@ -109,7 +109,7 @@ class Team:
 
     async def create_team(self, ctx, team_name):
         players = ctx.message.mentions
-        if len(players) != 2:
+        if len(players) != 5:
             await ctx.send('Une equipe est composee de exactement 5 joueurs')
             return
 
@@ -126,12 +126,11 @@ class Team:
     def define_team(self, players):
         self.TOP, self.JGL=( #), self.MID, self.ADC, self.SUPP = (
         players[0],
-        players[1])
-        ''',
+        players[1],
         players[2],
         players[3],
         players[4],
-        )'''
+        )
 
 
     async def modify(self, ctx, index1: int, index2: int):
@@ -155,10 +154,10 @@ class Team:
         await self.show_team(ctx)
 
     async def show_team(self, ctx):
-        await ctx.send(f"Equipe {self.team_name} :\n"
-                       f"TOP: {self.TOP.mention}\nJGL: {self.JGL.mention}\n")
-                       #f"MID: {self.MID.mention}\nADC: {self.ADC.mention}\n"
-                       #f"SUPP: {self.SUPP.mention}.")
+        await ctx.send(f"Equipe {self.team_name} :\n" 
+                       f"TOP: {self.TOP.mention} - Score {self.players_in_team[self.TOP].score} \nJGL: {self.JGL.mention} - Score {self.players_in_team[self.JGL].score}\n"
+                       f"MID: {self.MID.mention} - Score {self.players_in_team[self.MID].score}\nADC: {self.ADC.mention} - Score {self.players_in_team[self.ADC].score}\n"
+                       f"SUPP: {self.SUPP.mention} - Score {self.players_in_team[self.SUPP].score}")
 
                         
     async def send_roles(self):
@@ -191,10 +190,10 @@ class Team:
             
 
     async def results(self, ctx):
-    # Affiche les rôles de chaque joueur
+    # Affiche les rôles de chaque joueur et leurs scores
         player_mentions = "\n".join([
-            f"{poste}: {player.mention} - Rôle: {self.players_in_team[player].role}"
-            for poste, player in zip(postes, [self.TOP, self.JGL])#, self.MID, self.ADC, self.SUPP])
+            f"{poste}: {player.mention} - Rôle: {self.players_in_team[player].role} - Score: {self.players_in_team[player].score}"
+            for poste, player in zip(postes, [self.TOP, self.JGL, self.MID, self.ADC, self.SUPP])
         ])
     
         await ctx.send(f"Equipe {self.team_name} :\n{player_mentions}")
@@ -205,7 +204,8 @@ class Team:
             i = 0        
             for poste in postes:
                 if player.poste != poste:
-                    if player.vote[0] == self.poste.role:
+                    player_at_current_poste = getattr(self, poste)
+                    if player.vote[i] == self.players_in_team[player_at_current_poste].role:
                         player.score += 1
                     i += 1
 

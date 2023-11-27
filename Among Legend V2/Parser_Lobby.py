@@ -85,6 +85,10 @@ async def test_stop_game(ctx, lobby_name):
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
         return
     
+    if lobby_name == "":
+        await ctx.send(f"Vous devez donner un nom a votre lobby.")
+        return
+    
     team_name1, team_name2, role_attribue = lobbies[lobby_name]
     
     for team_name in [team_name1, team_name2]:

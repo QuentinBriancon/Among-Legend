@@ -122,7 +122,6 @@ async def StopGame(ctx, lobby_name, response_team1, response_team2):
     for team_name in [team_name1, team_name2]:
         await teams[team_name].vote(ctx)
         
-    #Affichage des scores
         
     #Affichage des resultats
 

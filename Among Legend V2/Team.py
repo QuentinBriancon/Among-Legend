@@ -124,7 +124,7 @@ class Team:
         await ctx.send(f"L'equipe {self.team_name} a ete creee.")
    
     def define_team(self, players):
-        self.TOP, self.JGL=( #), self.MID, self.ADC, self.SUPP = (
+        self.TOP, self.JGL, self.MID, self.ADC, self.SUPP = (
         players[0],
         players[1],
         players[2],
@@ -161,14 +161,14 @@ class Team:
 
                         
     async def send_roles(self):
-        players = [self.TOP, self.JGL] #, self.MID, self.ADC, self.SUPP]
+        players = [self.TOP, self.JGL, self.MID, self.ADC, self.SUPP]
         for player in players:
             role = self.assigned_roles[player]
             description = Team.roles[role]['description']
             await player.send(f"Ton role dans Among Legends est : {role}.\nDescription : {description}")
             
     async def assign_roles(self, ctx):
-        players = [self.TOP, self.JGL] #, self.MID, self.ADC, self.SUPP]
+        players = [self.TOP, self.JGL, self.MID, self.ADC, self.SUPP]
 
         impo = random.choice(players)        
 

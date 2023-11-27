@@ -111,8 +111,9 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
             
             return response
         
-
-        #Verifier la syntaxe        
+        #
+        #Verifier la syntaxe    
+        #    
         async def Get_vote(player):
             await player.discord_name.send(
                     ".\n Quels roles pensez vous qu'ont vos alliee, envoyez dans l'odre des postes de la game"
@@ -136,7 +137,6 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         
         
         #Recuperer les votes des joueurs
-        #Ajouter des threads pour que les joueurs puissent voter en meme temps
         vote_tasks = [Get_vote(player) for team_name in [team_name1, team_name2] for player in teams[team_name].players_in_team.values()]
         await asyncio.gather(*vote_tasks)
                 

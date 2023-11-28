@@ -124,10 +124,10 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
                     )
             
             try:
-                vote = await bot.wait_for("message",check=lambda m: m.author == player.discord_name, timeout=120)  
-                vote = vote.content.split(",")
+                vote_original = await bot.wait_for("message",check=lambda m: m.author == player.discord_name, timeout=120)  
+                vote = vote_original.content.split(",")
                 player.vote = vote
-                await player.discord_name.send(f"Vous avez vote pour {vote}")
+                await player.discord_name.send(f"Vous avez vote pour {vote_original}")
             except asyncio.TimeoutError:
                 await player.discord_name.send("Le temps imparti pour la reponse est ecoule.")
             

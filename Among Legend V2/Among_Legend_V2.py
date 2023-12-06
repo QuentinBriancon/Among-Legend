@@ -3,9 +3,11 @@ import discord
 from discord.ext import commands, tasks
 import asyncio
 from Team import Team
-from Player import Player
 from Parser_Team import *
 from Parser_Lobby import *
+import os
+from dotenv import load_dotenv
+import sys
 
 
 
@@ -147,6 +149,11 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         await ctx.send("L'event n'est pas reconnu, les events possibles sont : create, delete, send, start")
     
 
+# Charger les variables d'environnement à partir du fichier .env
+load_dotenv(sys.path[1]+"/Discord token.env")
+
+# Obtenir le token Discord depuis la variable d'environnement
+discord_token = os.getenv('DISCORD_TOKEN')
         
-bot.run('MTA5ODY0MTgzNTg2NzUxMjk4Mg.Gmx0h3.mVuueXOiAeBTEB-HI-QqagZDoEyTtajalcmm9w')
+bot.run(discord_token)
 

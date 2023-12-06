@@ -73,7 +73,7 @@ class Team:
             }
         },
         'Romeo':  {
-            'description': 'Ton objectif est de gagner mais aussi de protéger ton amour secret. Si ton amour secret est un allié, tu ne peux pas le tuer. Si ton amour secret est un ennemi, tu ne peux pas le tuer.',
+            'description': 'Ton objectif est de gagner mais aussi de protéger ton amour secret. Si ton amour secret est un allié, tu ne peux pas prendre de kill où il a l\'assist (ks). Si ton amour secret est un ennemi, tu ne peux pas le tuer.',
             'conditions': {
                 "result_game": 1,
                 "top_kill": -1,

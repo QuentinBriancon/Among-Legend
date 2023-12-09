@@ -94,7 +94,7 @@ class Team:
         },
     }
     
-    #droide, ultimate bravery
+    #droide, ultimate bravery, kda_player
 
 
     def __init__(self):

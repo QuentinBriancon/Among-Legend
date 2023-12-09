@@ -150,7 +150,7 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
     
 
 # Charger les variables d'environnement à partir du fichier .env
-load_dotenv(sys.path[1]+"/Discord token.env")
+load_dotenv(sys.path[1]+"/.env")
 
 # Obtenir le token Discord depuis la variable d'environnement
 discord_token = os.getenv('DISCORD_TOKEN')

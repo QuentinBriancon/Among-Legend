@@ -71,12 +71,13 @@ async def StartGame(ctx, lobby_name):
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
         return
     
-    await ctx.send("La partie va commencer.")
     team_name1, team_name2, role_attribue = lobbies[lobby_name]
     if role_attribue == False:
         await ctx.send("Les rôles n'ont pas été assignés. Utilisez !lobby preload.")
         return
     
+    await ctx.send("La partie va commencer.")
+
     for team_name in [team_name1, team_name2]:
         team = teams[team_name]
         for player in team.players_in_team.values():

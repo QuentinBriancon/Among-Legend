@@ -77,7 +77,11 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
     elif event == "start":
         await StartGame(ctx, lobby_name)
     elif event == "stop":
-        team_name1, team_name2 = await test_stop_game(ctx, lobby_name)
+        
+        try:
+            team_name1, team_name2 = await test_stop_game(ctx, lobby_name)
+        except:
+            return
         
         # Get the information of the game
         # Ask the two teams for the information

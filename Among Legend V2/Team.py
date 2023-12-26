@@ -71,7 +71,7 @@ class Team:
         players_list = list(self.players_in_team.keys())
         for index_player, player in enumerate(self.players_in_team):
             for index_vote, vote in enumerate(self.players_in_team[player].vote):
-                if index_vote <= index_player:
+                if index_vote >= index_player:
                     index = index_vote + 1
                 else:
                     index = index_vote

@@ -51,11 +51,6 @@ async def custom_help(ctx):
 async def team(ctx,event, arg1=None, arg2=None, Arg3=None, Arg4=None):
     if event == "create":
         await CreateTeam(ctx)
-    elif event == "modify":
-        team_name1= arg1
-        index1 = int(arg2)
-        index2 = int(Arg3)
-        await ModifyTeam(ctx, team_name1, index1, index2)
     elif event == "show":
         await ShowTeams(ctx)
     elif event == "delete":
@@ -117,7 +112,7 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         # Check the syntax   
         #    
         async def Get_vote(player):
-            await player.discord_name.send(
+            await player.discord_infos.send(
                     ".\n Quels roles pensez vous qu'ont vos alliee, envoyez dans l'odre des postes de la game"
                     "\n Exemple: si je suis mid et que je pense que le top est imposteur, le jgl super-heros, l'adc romeo et le supp Serpentin il faut envoyer:"
                     "\n Imposteur, Super-heros, Romeo, Serpentin"
@@ -126,12 +121,12 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
                     )
             
             try:
-                vote_original = await bot.wait_for("message",check=lambda m: m.author == player.discord_name, timeout=120)  
+                vote_original = await bot.wait_for("message",check=lambda m: m.author == player.discord_infos, timeout=120)  
                 vote = vote_original.content.split(",")
                 player.vote = vote
-                await player.discord_name.send(f"Vous avez vote pour {vote_original}")
+                await player.discord_infos.send(f"Vous avez vote pour {vote_original}")
             except asyncio.TimeoutError:
-                await player.discord_name.send("Le temps imparti pour la reponse est ecoule.")
+                await player.discord_infos.send("Le temps imparti pour la reponse est ecoule.")
             
 
         response_team1 = await Get_info(ctx, team_name1)
@@ -156,3 +151,4 @@ load_dotenv(sys.path[1]+"/.env")
 discord_token = os.getenv('DISCORD_TOKEN')
         
 bot.run(discord_token)
+

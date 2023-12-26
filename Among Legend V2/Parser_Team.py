@@ -32,14 +32,6 @@ async def CreateTeam(ctx):
     await teams[team_name].create_team(ctx, team_name)
 
 
-# Modify the team by switching two players
-async def ModifyTeam(ctx, team_name, index1: int, index2: int):
-    if team_name not in teams:
-        await ctx.send(f"L'equipe {team_name} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
-        return
-    await teams[team_name].modify(ctx, index1, index2)
-
-
 # Print the teams
 async def ShowTeams(ctx):
     if teams == {}:

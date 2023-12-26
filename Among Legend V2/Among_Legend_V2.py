@@ -151,3 +151,4 @@ load_dotenv(sys.path[1]+"/.env")
 discord_token = os.getenv('DISCORD_TOKEN')
         
 bot.run(discord_token)
+

@@ -1,10 +1,10 @@
+# -*- coding: latin-1 -*-
 import random
 import discord
 from discord.ext import commands, tasks
 import asyncio
 from Team import Team
 from Player import Player
-# -*- coding: latin-1 -*-
 
 
 teams={}

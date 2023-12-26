@@ -1,10 +1,10 @@
+# -*- coding: latin-1 -*-
 import random
 import discord
 from discord.ext import commands, tasks
 import asyncio
 from Player import Player
 from Data import *
-# -*- coding: latin-1 -*-
      
 
 class Team:
@@ -16,7 +16,7 @@ class Team:
     async def create_team(self, ctx, team_name):
         players = ctx.message.mentions
         if len(players) != 5:
-            await ctx.send('Une √©quipe est compos√©e de exactement 5 joueurs')
+            await ctx.send('Une Èquipe est composÈe de exactement 5 joueurs')
             return
         
         for index, player in enumerate(players):
@@ -24,11 +24,11 @@ class Team:
             
         self.team_name = team_name
 
-        await ctx.send(f"L'√©quipe {self.team_name} a √©t√© cr√©√©e.")
+        await ctx.send(f"L'Èquipe {self.team_name} a ÈtÈ crÈÈe.")
 
     # Print the 5 players in the team with their score
     async def show_team(self, ctx):
-        message = (f"√âquipe {self.team_name} :\n")
+        message = (f"…quipe {self.team_name} :\n")
         for player in self.players_in_team:
             message += f"{player.mention} - Score: {self.players_in_team[player].score}\n"
         await ctx.send(message)
@@ -38,7 +38,7 @@ class Team:
         for player in self.players_in_team:
             role = self.players_in_team[player].role
             description = roles[role]['description']
-            await player.send(f"Ton r√¥le dans Among Legends est : {role}.\nDescription : {description}")
+            await player.send(f"Ton rÙle dans Among Legends est : {role}.\nDescription : {description}")
             
     async def assign_roles(self, ctx):
         players_list = list(self.players_in_team.keys())
@@ -60,16 +60,23 @@ class Team:
     async def results(self, ctx):
     # Print the results of the game
         player_mentions = "\n".join([
-            f"{player.mention} - R√¥le: {self.players_in_team[player].role} - Score: {self.players_in_team[player].score}"
+            f"{player.mention} - RÙle: {self.players_in_team[player].role} - Score: {self.players_in_team[player].score}"
             for player in self.players_in_team
         ])
     
-        await ctx.send(f"√âquipe {self.team_name} :\n{player_mentions}")
+        await ctx.send(f"…quipe {self.team_name} :\n{player_mentions}")
         
     async def vote(self, ctx):        
         # Calculate the score of the players according to the votes
-        for player in self.players_in_team:
-            for vote in self.players_in_team[player].vote:
-                #dictionnaire nom joueur vote associ√©
-                pass
+        players_list = list(self.players_in_team.keys())
+        for index_player, player in enumerate(self.players_in_team):
+            for index_vote, vote in enumerate(self.players_in_team[player].vote):
+                if index_vote <= index_player:
+                    index = index_vote + 1
+                else:
+                    index = index_vote
+                    
+                if vote == self.players_in_team[players_list[index]].role:
+                    self.players_in_team[player].score += 1
+                    self.players_in_team[players_list[index]].score -= 1
 

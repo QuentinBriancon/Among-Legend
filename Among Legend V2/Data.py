@@ -1,6 +1,4 @@
-# Data.py
 # -*- coding: latin-1 -*-
-
 
 # Liste if all the roles, their description and conditions to win
 roles = {

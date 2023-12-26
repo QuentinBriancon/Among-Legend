@@ -1,9 +1,10 @@
+# -*- coding: latin-1 -*-
 import random
 import discord
 from discord.ext import commands, tasks
 import asyncio
 from Data import *
-# -*- coding: latin-1 -*-
+
 
 class Player:
        

@@ -9,7 +9,7 @@ from Parser_Team import *
 
 lobbies={}
 
-# Crée le lobby
+# Create a lobby between two teams with the given name
 async def CreateLobby(ctx, team_name1, team_name2 ,lobby_name):
     
     if team_name1 not in teams or team_name2 not in teams:
@@ -35,7 +35,7 @@ async def CreateLobby(ctx, team_name1, team_name2 ,lobby_name):
     await teams[team_name2].show_team(ctx)
     
 
-# Supprime le lobby
+# Delete the lobby with the given name
 async def DeleteLobby(ctx, lobby_name):
     if lobby_name not in lobbies:
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
@@ -44,7 +44,7 @@ async def DeleteLobby(ctx, lobby_name):
     await ctx.send(f"Le lobby {lobby_name} a ete supprime.")
 
 
-# Choix des roles
+# Send the roles to the players in the lobby
 async def SendRoles(ctx, lobby_name):
     if lobby_name not in lobbies:
         await ctx.send(f"Le lobby {lobby_name} n'existe pas. Cree un lobby avec !lobby create <nom du lobby>")
@@ -64,7 +64,7 @@ async def SendRoles(ctx, lobby_name):
     
     lobbies[lobby_name][2] = True
         
-# Lance la partie avec le lobby donné
+# Launch the game for the lobby
 async def StartGame(ctx, lobby_name):
     if lobby_name not in lobbies:
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
@@ -83,7 +83,7 @@ async def StartGame(ctx, lobby_name):
             player.game_in_progress = True
 
 
-#Teste si une partie est en cours
+# Test if the game can be stopped
 async def test_stop_game(ctx, lobby_name):
     if lobby_name not in lobbies:
         await ctx.send(f"Le lobby {lobby_name} n'existe pas.")
@@ -103,32 +103,32 @@ async def test_stop_game(ctx, lobby_name):
                 return
     return team_name1, team_name2
 
-# Arrete la partie pour le lobby donne
+# Stop the game for the lobby
 async def StopGame(ctx, lobby_name, response_team1, response_team2):
     
     await ctx.send("La partie va s'arreter.")
     
     team_name1, team_name2, role_attribue = lobbies[lobby_name]
 
-    #Calcul des scores    
+    # Calculate the score    
     
-    #Objectifs
+    # Objectives
     for team_name, response in zip([team_name1, team_name2], [response_team1, response_team2]):
         team = teams[team_name]
         for player in team.players_in_team.values():        
             player.player_objective(response)
 
-    #Votes
+    # Votes
     for team_name in [team_name1, team_name2]:
         await teams[team_name].vote(ctx)
         
         
-    #Affichage des resultats
+    # Results
 
     for team_name in [team_name1, team_name2]:
         await teams[team_name].results(ctx)
     
-    #Reset des roles
+    # Reset the game
     for team_name in [team_name1, team_name2]:
         team = teams[team_name]
         for player in team.players_in_team.values():

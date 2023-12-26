@@ -25,7 +25,7 @@ class Player:
                 await self.notify_romeo()
 
         
-    #Notifier le double face selon s'il doit gagner la partie ou la perdre, cela change a des moments aleatoire tant que la partie est en cours
+    # Notify the double-face of his objective
     async def notify_double_face(self):
         while self.game_in_progress:
             rand_time = random.randint(0, 10)*60        
@@ -38,7 +38,7 @@ class Player:
                 
             await asyncio.sleep(rand_time) 
             
-#Notifier le romeo de son amour secret
+# Notify the romeo of his objective
     async def notify_romeo(self):
         team = random.choice(["alliee", "ennemie"])
         poste_list = ["TOP","JGL","MID","ADC","SUPP"]
@@ -52,7 +52,7 @@ class Player:
             
 
 
-    #Calculer le score du joueur selon son role et le resultat de la partie
+    # Calculate the score of the player according to the objectives
     def player_objective(self, response):
         
         result = response.content.lower()

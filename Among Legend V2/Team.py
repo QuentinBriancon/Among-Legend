@@ -190,7 +190,7 @@ class Team:
             
 
     async def results(self, ctx):
-    # Affiche les rôles de chaque joueur et leurs scores
+    # Print the results of the game
         player_mentions = "\n".join([
             f"{poste}: {player.mention} - Rôle: {self.players_in_team[player].role} - Score: {self.players_in_team[player].score}"
             for poste, player in zip(postes, [self.TOP, self.JGL, self.MID, self.ADC, self.SUPP])
@@ -199,7 +199,7 @@ class Team:
         await ctx.send(f"Equipe {self.team_name} :\n{player_mentions}")
         
     async def vote(self, ctx):        
-        #Calcul des scores liés aux votes, premier vote (Imposteur...) = premier poste n'etant pas le joueur, (TOP, JGL, MID, ADC, SUPP)
+        # Calculate the score
         for player in self.players_in_team.values():
             i = 0        
             for poste in postes:

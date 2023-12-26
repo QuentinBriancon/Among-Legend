@@ -84,8 +84,8 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
     elif event == "stop":
         team_name1, team_name2 = await test_stop_game(ctx, lobby_name)
         
-        #Recuperer les informations de fin de partie
-        #Demander pour les deux equipes
+        # Get the information of the game
+        # Ask the two teams for the information
         async def Get_info(ctx, team_name):
             await ctx.channel.send(
                 f"La partie est sur le point de se terminer. Veuillez fournir les informations suivantes en mentionnant les personnes concernees pour les informations suivante dans la team {team_name} (dans le meme ordre):"
@@ -93,7 +93,7 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
             )
 
             def check(response_message):
-                # Vérifie que le message provient du même utilisateur et du même salon
+                # Verify that the message is from the same author and channel
               return (
                     response_message.author == ctx.author
                     and response_message.channel == ctx.channel
@@ -103,8 +103,8 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         
 
             try:
-                # Attend une réponse pendant 120 secondes
-                response = await bot.wait_for("message", check=check, timeout=120)
+                # Wait for a response with the check
+                response = await bot.wait_for("message", check=check, timeout=300)
                 await ctx.channel.send(f"Merci pour les informations ! Vous avez répondu : {response.content}")
             except asyncio.TimeoutError:
                 await ctx.channel.send("Le temps imparti pour la réponse est écoulé.")
@@ -114,7 +114,7 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
             return response
         
         #
-        #Verifier la syntaxe    
+        # Check the syntax   
         #    
         async def Get_vote(player):
             await player.discord_name.send(
@@ -138,7 +138,7 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         response_team2 = await Get_info(ctx, team_name2)
         
         
-        #Recuperer les votes des joueurs
+        # Get the vote of the players
         vote_tasks = [Get_vote(player) for team_name in [team_name1, team_name2] for player in teams[team_name].players_in_team.values()]
         await asyncio.gather(*vote_tasks)
                 
@@ -149,10 +149,10 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         await ctx.send("L'event n'est pas reconnu, les events possibles sont : create, delete, send, start")
     
 
-# Charger les variables d'environnement à partir du fichier .env
+# Load the environment variables .env
 load_dotenv(sys.path[1]+"/.env")
 
-# Obtenir le token Discord depuis la variable d'environnement
+# Get the discord token
 discord_token = os.getenv('DISCORD_TOKEN')
         
 bot.run(discord_token)

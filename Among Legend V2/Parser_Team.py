@@ -8,13 +8,13 @@ from Player import Player
 
 teams={}
 
-# Crée l'équipe
+# Create a team with the given name and players
 async def CreateTeam(ctx):
     content = ctx.message.content
     command = "team create"  
-    mentions = ctx.message.mentions  # Liste des mentions dans le message
+    mentions = ctx.message.mentions  # Lisist of the mentions
     
-    # Extrait le contenu qui n'est ni les mentions ni la commande
+    # Extract the team name from the message
     team_name = content.replace(f"!{command}", "")
     for mention in mentions:
         team_name = team_name.replace(mention.mention, "")
@@ -32,7 +32,7 @@ async def CreateTeam(ctx):
     await teams[team_name].create_team(ctx, team_name)
 
 
-# Modifie l'équipe
+# Modify the team by switching two players
 async def ModifyTeam(ctx, team_name, index1: int, index2: int):
     if team_name not in teams:
         await ctx.send(f"L'equipe {team_name} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
@@ -40,7 +40,7 @@ async def ModifyTeam(ctx, team_name, index1: int, index2: int):
     await teams[team_name].modify(ctx, index1, index2)
 
 
-# Affiche les équipes
+# Print the teams
 async def ShowTeams(ctx):
     if teams == {}:
         await ctx.send(f"Aucune equipe n'a ete creee pour le moment. Creez une equipe en utilisant !team create <nom de la team>.")
@@ -49,7 +49,7 @@ async def ShowTeams(ctx):
         await teams[team_name].show_team(ctx)
 
 
-# Supprime l'équipe
+# Delete the team with the given name
 async def DeleteTeam(ctx, team_name):
     if team_name not in teams:
         await ctx.send(f"L'equipe {team_name} n'existe pas.")
@@ -57,7 +57,7 @@ async def DeleteTeam(ctx, team_name):
     del teams[team_name]
     await ctx.send(f"L'equipe {team_name} a ete supprimee.")
 
-#Echange deux joueurs entre deux equipes
+# Exchange two players between two teams
 #pb
 #
 async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
@@ -82,7 +82,7 @@ async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
         teams[team_name1].define_team(players_team1)
         teams[team_name2].define_team(players_team2)
     
-        #echange les objets player entre les equipes
+        # exchange the player objects
         teams[team_name1].players_in_team[players_team1[index1]], teams[team_name2].players_in_team[players_team2[index2]] = teams[team_name2].players_in_team[players_team2[index2]], teams[team_name1].players_in_team[players_team1[index1]]
     
         await ctx.send(f"Les joueurs {players_team1[index1]} et {players_team2[index2]} ont ete echanges entre les equipes {team_name1} et {team_name2}.")

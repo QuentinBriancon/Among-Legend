@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands, tasks
 import asyncio
 from Data import *
+# -*- coding: latin-1 -*-
 
 class Player:
        
@@ -43,10 +44,10 @@ class Player:
             # A changer
             #poste_list.remove(self.poste)
             poste = random.choice(poste_list)
-            await self.discord_infos.send(f"Ton amour secret dans l'equipe alliee, il joue {poste}.")
+            await self.discord_infos.send(f"Ton amour secret dans l'équipe alliée, il joue {poste}.")
         else:
             poste = random.choice(poste_list)
-            await self.discord_infos.send(f"Ton amour secret dans l'equipe ennemie, il joue {poste}.")
+            await self.discord_infos.send(f"Ton amour secret dans l'équipe ennemie, il joue {poste}.")
             
 
 

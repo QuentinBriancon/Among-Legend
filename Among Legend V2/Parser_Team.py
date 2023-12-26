@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 import asyncio
 from Team import Team
 from Player import Player
+# -*- coding: latin-1 -*-
 
 
 teams={}
@@ -21,11 +22,11 @@ async def CreateTeam(ctx):
     team_name = team_name.strip(" ")
 
     if team_name in teams:
-        await ctx.send(f"L'equipe {team_name} existe deja. Supprimer une equipe en utilisant !team delete <nom de la team>.")
+        await ctx.send(f"L'équipe {team_name} existe déjà. Supprimer une équipe en utilisant !team delete <nom de l'équipe>.")
         return
     
     if team_name == "":
-        await ctx.send(f"Vous devez donner un nom a votre equipe.")
+        await ctx.send(f"Vous devez donner un nom à votre équipe.")
         return
 
     teams[team_name] = Team()
@@ -35,7 +36,7 @@ async def CreateTeam(ctx):
 # Print the teams
 async def ShowTeams(ctx):
     if teams == {}:
-        await ctx.send(f"Aucune equipe n'a ete creee pour le moment. Creez une equipe en utilisant !team create <nom de la team>.")
+        await ctx.send(f"Aucune équipe n'a été créée pour le moment. Créez une équipe en utilisant !team create <nom de l'équipe>.")
         return
     for team_name  in teams:
         await teams[team_name].show_team(ctx)
@@ -44,10 +45,10 @@ async def ShowTeams(ctx):
 # Delete the team with the given name
 async def DeleteTeam(ctx, team_name):
     if team_name not in teams:
-        await ctx.send(f"L'equipe {team_name} n'existe pas.")
+        await ctx.send(f"L'équipe {team_name} n'existe pas.")
         return
     del teams[team_name]
-    await ctx.send(f"L'equipe {team_name} a ete supprimee.")
+    await ctx.send(f"L'équipe {team_name} a été supprimée.")
 
 # Exchange two players between two teams
 #pb
@@ -55,10 +56,10 @@ async def DeleteTeam(ctx, team_name):
 async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
     if team_name1 not in teams or team_name2 not in teams:
         if team_name1 not in teams:
-            await ctx.send(f"L'equipe {team_name1} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
+            await ctx.send(f"L'équipe {team_name1} n'existe pas. Créez une équipe en utilisant !team create <nom de l'équipe>.")
             return
         else:
-            await ctx.send(f"L'equipe {team_name2} n'existe pas. Creez une equipe en utilisant !team create <nom de la team>.")
+            await ctx.send(f"L'équipe {team_name2} n'existe pas. Créez une équipe en utilisant !team create <nom de l'équipe>.")
             return
         
     index1 -= 1
@@ -77,10 +78,10 @@ async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
         # exchange the player objects
         teams[team_name1].players_in_team[players_team1[index1]], teams[team_name2].players_in_team[players_team2[index2]] = teams[team_name2].players_in_team[players_team2[index2]], teams[team_name1].players_in_team[players_team1[index1]]
     
-        await ctx.send(f"Les joueurs {players_team1[index1]} et {players_team2[index2]} ont ete echanges entre les equipes {team_name1} et {team_name2}.")
+        await ctx.send(f"Les joueurs {players_team1[index1]} et {players_team2[index2]} ont été échangés entre les équipes {team_name1} et {team_name2}.")
     
     else:
-        await ctx.send(f"Les indices doivent etre entre 1 et 5.")
+        await ctx.send(f"Les indices doivent être entre 1 et 5.")
         return
     
 #Ajouter un joueur ne peut etre que dans une equipe au total

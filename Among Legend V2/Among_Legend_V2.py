@@ -5,10 +5,11 @@ import asyncio
 from Team import Team
 from Parser_Team import *
 from Parser_Lobby import *
+from Data import *
 import os
 from dotenv import load_dotenv
 import sys
-
+# -*- coding: latin-1 -*-
 
 
 intents = discord.Intents.all()
@@ -26,9 +27,9 @@ async def on_ready():
 @bot.command()
 async def rules(ctx):
     role_list = ""
-    for role, description in Team.roles.items():
-        role_list += f"\n\n{role}:\n{description}"
-    await ctx.send(f"Le jeu se deroule comme une partie normale de league of legends mais des roles sont assignes et les joueurs peuvent avoir des objectifs un peu differents. Les roles sont :{role_list}")
+    for role in roles.keys():
+        role_list += f"\n\n{role} {roles[role]['emoji']}:\n{roles[role]['description']}"
+    await ctx.send(f"Le jeu se déroule comme une partie normale de League of Legends, mais des rôles sont assignés et les joueurs peuvent avoir des objectifs un peu différents. Les rôles sont :{role_list}")
 
 @bot.command()
 async def custom_help(ctx):
@@ -63,7 +64,7 @@ async def team(ctx,event, arg1=None, arg2=None, Arg3=None, Arg4=None):
         index2 = int(Arg4)
         await SwitchPlayer(ctx, team_name1, index1, team_name2, index2)
     else:
-        await ctx.send("L'event n'est pas reconnu, les events possibles sont : create, modify, show, delete, switch")
+        await ctx.send("L'événement n'est pas reconnu, les événements possibles sont : create, modify, show, delete, switch")
 
 
 @bot.command()
@@ -83,8 +84,8 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         # Ask the two teams for the information
         async def Get_info(ctx, team_name):
             await ctx.channel.send(
-                f"La partie est sur le point de se terminer. Veuillez fournir les informations suivantes en mentionnant les personnes concernees pour les informations suivante dans la team {team_name} (dans le meme ordre):"
-                "\n victoire/defaite, top kill, top mort, top degats, pire participation aux kill"
+                f"La partie est sur le point de se terminer. Veuillez fournir les informations suivantes en mentionnant les personnes concernées pour les informations suivantes dans la team {team_name} (dans le même ordre):"
+                "\n victoire/défaite, top kill, top mort, top dégâts, pire participation aux kill"
             )
 
             def check(response_message):
@@ -113,20 +114,20 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
         #    
         async def Get_vote(player):
             await player.discord_infos.send(
-                    ".\n Quels roles pensez vous qu'ont vos alliee, envoyez dans l'odre des postes de la game"
-                    "\n Exemple: si je suis mid et que je pense que le top est imposteur, le jgl super-heros, l'adc romeo et le supp Serpentin il faut envoyer:"
-                    "\n Imposteur, Super-heros, Romeo, Serpentin"
-                    "\n Faites attention a la syntaxe, il est conseille de copier coller au cas ou :"
-                    "\n Imposteur, Serpentin, Double-face, Super-heros, Agent double, Romeo, Innovateur"
-                    )
+                    ".\n Quels rôles pensez-vous qu'ont vos alliés, envoyez dans l'ordre des postes de la game"
+                    "\n Exemple: si je suis mid et que je pense que le top est imposteur, le jgl super-héros, l'adc romeo et le supp Serpentin il faut envoyer:"
+                    "\n Imposteur, Super-héros, Romeo, Serpentin"
+                    "\n Faites attention à la syntaxe, il est conseillé de copier-coller au cas où :"
+                    "\n Imposteur, Serpentin, Double-face, Super-héros, Agent double, Romeo, Innovateur"
+                )
             
             try:
                 vote_original = await bot.wait_for("message",check=lambda m: m.author == player.discord_infos, timeout=120)  
                 vote = vote_original.content.split(",")
                 player.vote = vote
-                await player.discord_infos.send(f"Vous avez vote pour {vote_original}")
+                await player.discord_infos.send(f"Vous avez voté pour {vote_original}")
             except asyncio.TimeoutError:
-                await player.discord_infos.send("Le temps imparti pour la reponse est ecoule.")
+                await player.discord_infos.send("Le temps imparti pour la réponse est écoulé.")
             
 
         response_team1 = await Get_info(ctx, team_name1)
@@ -141,7 +142,7 @@ async def lobby(ctx,event, lobby_name=None ,team_name1=None, team_name2=None):
 
         await StopGame(ctx, lobby_name, response_team1, response_team2)
     else:
-        await ctx.send("L'event n'est pas reconnu, les events possibles sont : create, delete, send, start")
+        await ctx.send("L'événement n'est pas reconnu, les événements possibles sont : create, delete, send, start")
     
 
 # Load the environment variables .env

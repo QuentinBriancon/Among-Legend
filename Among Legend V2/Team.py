@@ -4,7 +4,8 @@ from discord.ext import commands, tasks
 import asyncio
 from Player import Player
 from Data import *
-       
+# -*- coding: latin-1 -*-
+     
 
 class Team:
 
@@ -15,7 +16,7 @@ class Team:
     async def create_team(self, ctx, team_name):
         players = ctx.message.mentions
         if len(players) != 5:
-            await ctx.send('Une equipe est composee de exactement 5 joueurs')
+            await ctx.send('Une équipe est composée de exactement 5 joueurs')
             return
         
         for index, player in enumerate(players):
@@ -23,11 +24,11 @@ class Team:
             
         self.team_name = team_name
 
-        await ctx.send(f"L'equipe {self.team_name} a ete creee.")
+        await ctx.send(f"L'équipe {self.team_name} a été créée.")
 
     # Print the 5 players in the team with their score
     async def show_team(self, ctx):
-        message = (f"Equipe {self.team_name} :\n")
+        message = (f"Équipe {self.team_name} :\n")
         for player in self.players_in_team:
             message += f"{player.mention} - Score: {self.players_in_team[player].score}\n"
         await ctx.send(message)
@@ -37,7 +38,7 @@ class Team:
         for player in self.players_in_team:
             role = self.players_in_team[player].role
             description = roles[role]['description']
-            await player.send(f"Ton role dans Among Legends est : {role}.\nDescription : {description}")
+            await player.send(f"Ton rôle dans Among Legends est : {role}.\nDescription : {description}")
             
     async def assign_roles(self, ctx):
         players_list = list(self.players_in_team.keys())
@@ -63,7 +64,7 @@ class Team:
             for player in self.players_in_team
         ])
     
-        await ctx.send(f"Equipe {self.team_name} :\n{player_mentions}")
+        await ctx.send(f"Équipe {self.team_name} :\n{player_mentions}")
         
     async def vote(self, ctx):        
         # Calculate the score of the players according to the votes

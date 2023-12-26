@@ -79,4 +79,3 @@ class Team:
                 if vote == self.players_in_team[players_list[index]].role:
                     self.players_in_team[player].score += 1
                     self.players_in_team[players_list[index]].score -= 1
-

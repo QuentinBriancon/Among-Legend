@@ -85,6 +85,3 @@ async def SwitchPlayer(ctx, team_name1, index1: int, team_name2, index2: int):
         return
     
 #Ajouter un joueur ne peut etre que dans une equipe au total
-
-
-
